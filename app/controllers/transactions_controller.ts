@@ -7,24 +7,15 @@ export default class TransactionsController {
 
   public async store({ request, response }: HttpContext) {
     const payload = await request.validateUsing(createTransactionValidator)
-    const hashString =
-      payload.beneficiaryId +
-      payload.shopId +
-      payload.quantity +
-      payload.period +
-      payload.previousHash
 
     const expectedHash = calculateTransactionHash({
       beneficiaryId: payload.beneficiaryId,
       shopId: payload.shopId,
       quantity: payload.quantity,
       period: payload.period,
-      previousHash: payload.previousHash,
+      lastHash: payload.lastHash,
     })
 
-    console.log('HASH STRING:', hashString)
-    console.log('EXPECTED HASH:', expectedHash)
-    console.log('RECEIVED HASH:', payload.currentHash)
 
     if (expectedHash !== payload.currentHash) {
       return response.badRequest({
@@ -38,16 +29,16 @@ export default class TransactionsController {
       .first()
 
     if (lastTransaction) {
-      if (payload.previousHash !== lastTransaction.currentHash) {
+      if (payload.lastHash !== lastTransaction.currentHash) {
         return response.badRequest({
           message: 'CHAIN_BROKEN',
           error: 'Previous hash does not match the last transaction',
           expected: lastTransaction.currentHash,
-          received: payload.previousHash,
+          received: payload.lastHash,
         })
       }
     } else {
-      if (payload.previousHash !== '0' && payload.previousHash !== '') {
+      if (payload.lastHash !== '0' && payload.lastHash !== '') {
         return response.badRequest({
           message: 'INVALID_GENESIS',
           error: 'First transaction must have previousHash as "0" or empty string',

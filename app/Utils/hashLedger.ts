@@ -5,7 +5,7 @@ interface HashInput {
   shopId: string
   quantity: number
   period: string
-  previousHash: string
+  lastHash: string
 }
 
 export function calculateTransactionHash(input: HashInput): string {
@@ -14,7 +14,7 @@ export function calculateTransactionHash(input: HashInput): string {
     input.shopId +
     input.quantity +
     input.period +
-    input.previousHash
+    input.lastHash
 
   return crypto
     .createHash('sha256')

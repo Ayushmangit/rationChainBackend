@@ -27,7 +27,7 @@ export default class SyncController {
           shopId: incomingTrx.shopId,
           quantity: incomingTrx.quantity,
           period: incomingTrx.period,
-          previousHash: incomingTrx.previousHash,
+          lastHash: incomingTrx.lastHash,
         })
 
         if (expectedHash !== incomingTrx.currentHash) {
@@ -40,16 +40,16 @@ export default class SyncController {
         }
 
         if (lastTransaction) {
-          if (incomingTrx.previousHash !== lastTransaction.currentHash) {
+          if (incomingTrx.lastHash !== lastTransaction.currentHash) {
             rejected.push({
               id: incomingTrx.id,
               reason: 'CHAIN_BROKEN',
-              details: `Previous hash mismatch. Expected: ${lastTransaction.currentHash}, Got: ${incomingTrx.previousHash}`,
+              details: `Previous hash mismatch. Expected: ${lastTransaction.currentHash}, Got: ${incomingTrx.lastHash}`,
             })
             continue
           }
         } else {
-          if (incomingTrx.previousHash !== '0' && incomingTrx.previousHash !== '') {
+          if (incomingTrx.lastHash !== '0' && incomingTrx.lastHash !== '') {
             rejected.push({
               id: incomingTrx.id,
               reason: 'INVALID_GENESIS',
