@@ -13,7 +13,7 @@ export default class CreateTransactions extends BaseSchema {
       table.string('shop_id').notNullable()
       table.integer('quantity').notNullable()
       table.string('period').notNullable()
-      table.string('previous_hash').notNullable()
+      table.string('last_hash').notNullable()
       table.string('current_hash').notNullable().unique()
       table.string('sync_batch_id').nullable()
       table.boolean('is_synced').defaultTo(false)

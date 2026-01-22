@@ -6,7 +6,7 @@ export const createTransactionValidator = vine.compile(
     shopId: vine.string().trim().minLength(1),
     quantity: vine.number().positive(),
     period: vine.string().regex(/^\d{4}-\d{2}$/),
-    previousHash: vine.string().trim().minLength(1),
+    lastHash: vine.string().trim().minLength(1),
     currentHash: vine.string().trim(),
     isSynced: vine.boolean(),
     syncBatchId: vine.string().trim().nullable(),
