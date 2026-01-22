@@ -1,29 +1,23 @@
-import crypto from 'crypto'
-import { DateTime } from 'luxon'
+import crypto from 'node:crypto'
 
-export interface HashLedgerInput {
+interface HashInput {
   beneficiaryId: string
   shopId: string
   quantity: number
   period: string
-  transactionTime: DateTime
   previousHash: string
 }
 
-export function calculateTransactionHash(
-  data: HashLedgerInput
-): string {
-
-  const payload =
-    data.beneficiaryId +
-    data.shopId +
-    data.quantity +
-    data.period +
-    data.transactionTime.toJSDate().toISOString() +
-    data.previousHash
+export function calculateTransactionHash(input: HashInput): string {
+  const data =
+    input.beneficiaryId +
+    input.shopId +
+    input.quantity +
+    input.period +
+    input.previousHash
 
   return crypto
     .createHash('sha256')
-    .update(payload)
+    .update(data)
     .digest('hex')
 }

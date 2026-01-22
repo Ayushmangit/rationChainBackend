@@ -1,15 +1,14 @@
-import vine from '@vinejs/vine'
-import { DateTime } from 'luxon'
+import vine from "@vinejs/vine";
+
 export const createTransactionValidator = vine.compile(
   vine.object({
-    id: vine.string().uuid(),
-    beneficiaryId: vine.string(),
-    shopId: vine.string(),
-    quantity: vine.number(),
-    period: vine.string(),
-    transactionTime: vine.date().transform((date) => DateTime.fromJSDate(date)),
-    previousHash: vine.string(),
-    currentHash: vine.string(),
-    deviceId: vine.string()
+    beneficiaryId: vine.string().trim().minLength(1),
+    shopId: vine.string().trim().minLength(1),
+    quantity: vine.number().positive(),
+    period: vine.string().regex(/^\d{4}-\d{2}$/),
+    previousHash: vine.string().trim().minLength(1),
+    currentHash: vine.string().trim(),
+    isSynced: vine.boolean(),
+    syncBatchId: vine.string().trim().nullable(),
   })
 )

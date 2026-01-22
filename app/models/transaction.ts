@@ -1,33 +1,25 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
-import { DateTime } from 'luxon'
 export default class Transaction extends BaseModel {
   @column({ isPrimary: true })
-  public id!: string
-  @column()
-  public beneficiaryId!: string
-  @column()
-  public shopId!: string
-  @column()
-  public quantity!: number
-  @column()
-  public period!: string
-
-  @column.dateTime()
-  public transactionTime!: DateTime
+  declare id: number
 
   @column()
-  public previousHash!: string
+  declare beneficiaryId: string
+  @column()
+  declare shopId: string
+  @column()
+  declare quantity: number
+  @column()
+  declare period: string
+  @column()
+  declare previousHash: string
 
   @column()
-  public currentHash!: string
+  declare currentHash: string
 
   @column()
-  public deviceId!: string
+  declare isSynced: boolean
   @column()
-  public isSynced!: boolean
+  declare syncBatchId: string | null
 
-  @column.dateTime()
-  public syncedAt!: DateTime | null
-  @column()
-  public syncBatchId!: string | null
 }
