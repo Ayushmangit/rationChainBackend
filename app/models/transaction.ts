@@ -1,20 +1,14 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
-
 export default class Transaction extends BaseModel {
-
   @column({ isPrimary: true })
   public id!: string
-
   @column()
   public beneficiaryId!: string
-
   @column()
   public shopId!: string
-
   @column()
   public quantity!: number
-
   @column()
   public period!: string
 
@@ -29,13 +23,11 @@ export default class Transaction extends BaseModel {
 
   @column()
   public deviceId!: string
-
   @column()
   public isSynced!: boolean
 
   @column.dateTime()
   public syncedAt!: DateTime | null
-
   @column()
   public syncBatchId!: string | null
 }

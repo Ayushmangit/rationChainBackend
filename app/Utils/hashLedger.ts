@@ -1,11 +1,12 @@
 import crypto from 'crypto'
+import { DateTime } from 'luxon'
 
 export interface HashLedgerInput {
   beneficiaryId: string
   shopId: string
   quantity: number
   period: string
-  transactionTime: Date
+  transactionTime: DateTime
   previousHash: string
 }
 
@@ -18,7 +19,7 @@ export function calculateTransactionHash(
     data.shopId +
     data.quantity +
     data.period +
-    data.transactionTime.toISOString() +
+    data.transactionTime.toJSDate().toISOString() +
     data.previousHash
 
   return crypto

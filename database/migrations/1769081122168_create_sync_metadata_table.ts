@@ -1,18 +1,19 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
-export default class extends BaseSchema {
-  protected tableName = 'sync_metadata'
+export default class AddSyncMetadata extends BaseSchema {
+  protected tableName = 'transactions'
 
-  async up() {
-    this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
-
-      table.timestamp('created_at')
-      table.timestamp('updated_at')
+  public async up(): Promise<void> {
+    this.schema.alterTable(this.tableName, (table) => {
+      table.timestamp('synced_at').nullable()
+      table.string('sync_batch_id').nullable()
     })
   }
 
-  async down() {
-    this.schema.dropTable(this.tableName)
+  public async down(): Promise<void> {
+    this.schema.alterTable(this.tableName, (table) => {
+      table.dropColumn('synced_at')
+      table.dropColumn('sync_batch_id')
+    })
   }
 }

@@ -1,12 +1,5 @@
-/*
-|--------------------------------------------------------------------------
-| Routes file
-|--------------------------------------------------------------------------
-|
-| The routes file is used for defining the HTTP routes.
-|
-*/
-
+import SyncController from '#controllers/syncs_controller'
+import TransactionsController from '#controllers/transactions_controller'
 import router from '@adonisjs/core/services/router'
 
 router.get('/', async () => {
@@ -14,3 +7,5 @@ router.get('/', async () => {
     hello: 'world',
   }
 })
+router.post('/transactions', [TransactionsController, 'store'])
+router.post('/sync', [SyncController, 'sync'])

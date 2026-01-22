@@ -1,6 +1,8 @@
+import type { HttpContext } from '@adonisjs/core/http'
 import Transaction from '#models/transaction'
+import { calculateTransactionHash } from '../Utils/hashLedger.js'
 import { createTransactionValidator } from '#validators/create_transaction'
-import { HttpContext } from '@adonisjs/core/http'
+import { DateTime } from 'luxon'
 
 export default class TransactionsController {
 
@@ -15,24 +17,22 @@ export default class TransactionsController {
       transactionTime: payload.transactionTime,
       previousHash: payload.previousHash,
     })
-
     if (expectedHash !== payload.currentHash) {
-      return response.badRequest({ message: 'HASH_MISMATCH' })
+      return response.badRequest({
+        message: 'HASH_MISMATCH'
+      })
     }
-
     try {
       const transaction = await Transaction.create({
         ...payload,
         isSynced: true,
-        syncedAt: new Date()
+        syncedAt: DateTime.now()
       })
-
       return response.created(transaction)
     } catch {
-      return response.conflict({ message: 'DUPLICATE_TRANSACTION' })
+      return response.conflict({
+        message: 'DUPLICATE_TRANSACTION'
+      })
     }
   }
-}
-function calculateTransactionHash(arg0: { beneficiaryId: any; shopId: any; quantity: any; period: any; transactionTime: any; previousHash: any }) {
-  throw new Error('Function not implemented.')
 }

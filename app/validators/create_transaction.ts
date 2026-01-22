@@ -1,5 +1,5 @@
 import vine from '@vinejs/vine'
-
+import { DateTime } from 'luxon'
 export const createTransactionValidator = vine.compile(
   vine.object({
     id: vine.string().uuid(),
@@ -7,7 +7,7 @@ export const createTransactionValidator = vine.compile(
     shopId: vine.string(),
     quantity: vine.number(),
     period: vine.string(),
-    transactionTime: vine.date(),
+    transactionTime: vine.date().transform((date) => DateTime.fromJSDate(date)),
     previousHash: vine.string(),
     currentHash: vine.string(),
     deviceId: vine.string()
