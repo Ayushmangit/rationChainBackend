@@ -4,18 +4,9 @@ import type { HttpContext } from '@adonisjs/core/http'
 export default class UserController {
 
   async register({ request }: HttpContext) {
-    const { fullName, email } = request.only([
-      'fullName',
-      'email'
-    ])
-
-    const user = await User.create({
-      fullName,
-      email,
-    })
-
+    const payload = request.all()
+    const user = await User.create(payload)
     const token = await User.accessTokens.create(user)
-
     return {
       user,
       token: token.value!.release(),
@@ -23,10 +14,9 @@ export default class UserController {
   }
 
   async login({ request }: HttpContext) {
-    const { bid, password } = request.only(['bid', 'password'])
-    const user = await User.verifyCredentials(bid, password)
+    const { rationCardId, password } = request.only(['rationCardId', 'password'])
+    const user = await User.verifyCredentials(rationCardId, password)
     const token = await User.accessTokens.create(user)
-
     return {
       user,
       token: token.value!.release(),
